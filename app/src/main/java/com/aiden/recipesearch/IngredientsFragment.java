@@ -66,9 +66,6 @@ public class IngredientsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //TODO figure out whether I want to have amount (so many different units omg)
-        // maybe would need full page dialog if including amount
-        // could just have amount as something you look after yourself to keep stock ig that would work
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_ingredients, container, false);
@@ -90,7 +87,6 @@ public class IngredientsFragment extends Fragment {
 
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v1 -> {
                 //Log.d("success", Objects.requireNonNull(input.getText()).toString());
-                //TODO Figure out how to make the error not look like crap (may be impossible)
                 boolean error = false;
 
                 if(Objects.requireNonNull(ingredient.getText()).toString().trim().isEmpty()){
