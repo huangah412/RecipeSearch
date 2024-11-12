@@ -23,17 +23,14 @@ public class IngredientRepository {
     void insert(Ingredient ingredient){
         IngredientRoomDatabase.databaseWriteExecutor.execute(() -> {
             String item = ingredient.ingredient;
-            if(ingredientDao.getIngredient(item) == null){
+            if(ingredientDao.getIngredient(item) == null) { //checks for duplicate
                 ingredientDao.insert(ingredient);
-            } else{
+            } else {
                 int amount = ingredientDao.getAmount(item);
-                if(amount == -1) { //no amount inputted
-                    ingredientDao.insert(ingredient); //replaces -1 amount with amount specified
+                if(amount != -1) { //if amount inputted
+                    ingredient.amount += amount; //adds amount
                 }
-                else {
-                    ingredient.amount += amount;
-                    ingredientDao.insert(ingredient); //inserts ingredient with amount and current amount added together
-                }
+                ingredientDao.insert(ingredient);
             }
         });
     }
