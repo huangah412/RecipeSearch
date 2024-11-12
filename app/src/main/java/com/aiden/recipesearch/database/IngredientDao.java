@@ -9,13 +9,17 @@ import java.util.List;
 
 @Dao
 public interface IngredientDao {
-
-    // TODO: add logic to combine amounts if there is a duplicate ingredient (in separate class)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Ingredient ingredient);
 
     @Query("DELETE FROM ingredient_table")
     void deleteAll();
+
+    @Query("SELECT * FROM ingredient_table WHERE ingredient = :name")
+    Ingredient getIngredient(String name);
+
+    @Query("SELECT amount FROM ingredient_table WHERE ingredient = :name")
+    int getAmount(String name);
 
     @Query("SELECT * FROM ingredient_table ORDER BY ingredient ASC")
     LiveData<List<Ingredient>> getAlphabetizedIngredients();
