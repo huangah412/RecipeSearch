@@ -18,8 +18,8 @@ public interface IngredientDao {
     @Query("SELECT * FROM ingredient_table WHERE ingredient = :name")
     Ingredient getIngredient(String name);
 
-    @Query("SELECT amount FROM ingredient_table WHERE ingredient = :name")
-    int getAmount(String name);
+    /*@Query("SELECT amount FROM ingredient_table WHERE ingredient = :name")
+    int getAmount(String name);*/
 
     @Query("SELECT * FROM ingredient_table ORDER BY ingredient ASC")
     LiveData<List<Ingredient>> getAlphabetizedIngredients();

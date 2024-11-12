@@ -22,13 +22,13 @@ public class IngredientRepository {
     //Combines amount if there is duplicate ingredient, if no amount replaces with amount specified
     void insert(Ingredient ingredient){
         IngredientRoomDatabase.databaseWriteExecutor.execute(() -> {
-            String item = ingredient.ingredient;
-            if(ingredientDao.getIngredient(item) == null) { //checks for duplicate
+            String itemName = ingredient.ingredient;
+            Ingredient item = ingredientDao.getIngredient(itemName);
+            if(item == null) { //checks for duplicate
                 ingredientDao.insert(ingredient);
             } else {
-                int amount = ingredientDao.getAmount(item);
-                if(amount != -1) { //if amount inputted
-                    ingredient.amount += amount; //adds amount
+                if(item.amount != -1) { //if amount inputted
+                    ingredient.amount += item.amount; //adds amount
                 }
                 ingredientDao.insert(ingredient);
             }
