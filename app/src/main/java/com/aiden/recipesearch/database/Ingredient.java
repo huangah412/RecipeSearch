@@ -13,5 +13,8 @@ public class Ingredient {
     public String ingredient;
     public int amount;
 
-    public Ingredient(@NonNull String ingredient) {this.ingredient = ingredient;}
+    public Ingredient(@NonNull String ingredient, int amount) {
+        this.ingredient = ingredient;
+        this.amount = amount;
+    }
 }

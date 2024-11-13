@@ -4,11 +4,17 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aiden.recipesearch.database.Ingredient;
+import com.aiden.recipesearch.database.IngredientViewModel;
+import com.aiden.recipesearch.recyclerview.IngredientListAdapter;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -26,6 +32,7 @@ public class IngredientsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private IngredientViewModel ingredientViewModel;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -71,6 +78,16 @@ public class IngredientsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_ingredients, container, false);
         FloatingActionButton fab = rootView.findViewById(R.id.floatingActionButton);
 
+        RecyclerView recyclerView = rootView.findViewById(R.id.ingredients);
+        final IngredientListAdapter adapter = new IngredientListAdapter(new IngredientListAdapter.IngredientDiff());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        ingredientViewModel = new ViewModelProvider(this).get(IngredientViewModel.class);
+        ingredientViewModel.getAllIngredients().observe(getViewLifecycleOwner(), ingredients -> {
+            adapter.submitList(ingredients);
+        });
+
         //when FAB is pressed open dialog to input ingredient and amount
         fab.setOnClickListener(v -> {
             View view1 = LayoutInflater.from(getContext()).inflate(R.layout.dialog_layout,null);
@@ -88,15 +105,18 @@ public class IngredientsFragment extends Fragment {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v1 -> {
                 //Log.d("success", Objects.requireNonNull(input.getText()).toString());
                 boolean error = false;
+                String ingredientString = Objects.requireNonNull(ingredient.getText()).toString().trim();
+                String amountString = Objects.requireNonNull(amount.getText()).toString().trim();
 
-                if(Objects.requireNonNull(ingredient.getText()).toString().trim().isEmpty()){
+                if(ingredientString.isEmpty()) {
                     ingredient.setError("Input ingredient");
                     error = true;
                 } else{
                     ingredient.setError(null);
                 }
 
-                if(Objects.requireNonNull(amount.getText()).toString().trim().isEmpty()){
+                // TODO: input nothing as amount, ingredient amount -1 to signify nothing
+                if(amountString.isEmpty()){
                     amount.setError("Input amount");
                     error = true;
                 } else{
@@ -104,7 +124,9 @@ public class IngredientsFragment extends Fragment {
                 }
 
                 if(!error){
-                    //TODO make this do something
+                    // TODO: More checks/regex to make sure stuff inputted into database is following same format
+                    Ingredient ingredient1 = new Ingredient(ingredientString, Integer.parseInt(amountString));
+                    ingredientViewModel.insert(ingredient1);
                     dialog.dismiss();
                 }
             });
