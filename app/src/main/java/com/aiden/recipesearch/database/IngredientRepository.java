@@ -22,7 +22,6 @@ public class IngredientRepository {
     //Combines amount if there is duplicate ingredient, if no amount replaces with amount specified
     void insert(Ingredient ingredient){
         IngredientRoomDatabase.databaseWriteExecutor.execute(() -> {
-            /*
             String itemName = ingredient.ingredient;
             Ingredient item = ingredientDao.getIngredient(itemName);
             if(item == null) { //checks for duplicate
@@ -30,10 +29,10 @@ public class IngredientRepository {
             } else {
                 if(item.amount != -1) { //if amount inputted
                     ingredient.amount += item.amount; //adds amount
+                    ingredient.id = item.id; //sets new id same as old id so it replaces in the database
                 }
                 ingredientDao.insert(ingredient);
-            }*/
-            ingredientDao.insert(ingredient);
+            }
         });
     }
 }

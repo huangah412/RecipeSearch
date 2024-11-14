@@ -20,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
+import com.aiden.recipesearch.util.StringUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -115,16 +116,16 @@ public class IngredientsFragment extends Fragment {
                     ingredient.setError(null);
                 }
 
-                // TODO: input nothing as amount, ingredient amount -1 to signify nothing
                 if(amountString.isEmpty()){
-                    amount.setError("Input amount");
-                    error = true;
+                    amountString = "-1";
                 } else{
                     amount.setError(null);
                 }
 
                 if(!error){
-                    // TODO: More checks/regex to make sure stuff inputted into database is following same format
+                    ingredientString = ingredientString.replaceAll("  +", " ");
+                    ingredientString = StringUtils.toTitleCase(ingredientString);
+
                     Ingredient ingredient1 = new Ingredient(ingredientString, Integer.parseInt(amountString));
                     ingredientViewModel.insert(ingredient1);
                     dialog.dismiss();

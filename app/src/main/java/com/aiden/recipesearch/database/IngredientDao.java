@@ -33,5 +33,5 @@ public interface IngredientDao {
     @Query("SELECT * FROM ingredient_table ORDER BY amount DESC")
     LiveData<List<Ingredient>> getAmountDescending();
 
-    //TODO: get IDs query, find out what order would get newest first
+    //TODO: get IDs query, find out what order would get newest first (its last first but probably not needed)
 }
