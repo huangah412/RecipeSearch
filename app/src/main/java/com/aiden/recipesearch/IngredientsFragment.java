@@ -4,16 +4,23 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aiden.recipesearch.database.Ingredient;
+import com.aiden.recipesearch.database.IngredientViewModel;
+import com.aiden.recipesearch.recyclerview.IngredientListAdapter;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
+import com.aiden.recipesearch.util.StringUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +33,7 @@ public class IngredientsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private IngredientViewModel ingredientViewModel;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -66,13 +74,20 @@ public class IngredientsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //TODO figure out whether I want to have amount (so many different units omg)
-        // maybe would need full page dialog if including amount
-        // could just have amount as something you look after yourself to keep stock ig that would work
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_ingredients, container, false);
         FloatingActionButton fab = rootView.findViewById(R.id.floatingActionButton);
+
+        RecyclerView recyclerView = rootView.findViewById(R.id.ingredients);
+        final IngredientListAdapter adapter = new IngredientListAdapter(new IngredientListAdapter.IngredientDiff());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        ingredientViewModel = new ViewModelProvider(this).get(IngredientViewModel.class);
+        ingredientViewModel.getAllIngredients().observe(getViewLifecycleOwner(), ingredients -> {
+            adapter.submitList(ingredients);
+        });
 
         //when FAB is pressed open dialog to input ingredient and amount
         fab.setOnClickListener(v -> {
@@ -90,25 +105,29 @@ public class IngredientsFragment extends Fragment {
 
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v1 -> {
                 //Log.d("success", Objects.requireNonNull(input.getText()).toString());
-                //TODO Figure out how to make the error not look like crap (may be impossible)
                 boolean error = false;
+                String ingredientString = Objects.requireNonNull(ingredient.getText()).toString().trim();
+                String amountString = Objects.requireNonNull(amount.getText()).toString().trim();
 
-                if(Objects.requireNonNull(ingredient.getText()).toString().trim().isEmpty()){
+                if(ingredientString.isEmpty()) {
                     ingredient.setError("Input ingredient");
                     error = true;
                 } else{
                     ingredient.setError(null);
                 }
 
-                if(Objects.requireNonNull(amount.getText()).toString().trim().isEmpty()){
-                    amount.setError("Input amount");
-                    error = true;
+                if(amountString.isEmpty()){
+                    amountString = "-1";
                 } else{
                     amount.setError(null);
                 }
 
                 if(!error){
-                    //TODO make this do something
+                    ingredientString = ingredientString.replaceAll("  +", " ");
+                    ingredientString = StringUtils.toTitleCase(ingredientString);
+
+                    Ingredient ingredient1 = new Ingredient(ingredientString, Integer.parseInt(amountString));
+                    ingredientViewModel.insert(ingredient1);
                     dialog.dismiss();
                 }
             });
