@@ -21,7 +21,7 @@ public class IngredientListAdapter extends ListAdapter<Ingredient, IngredientVie
     @Override
     public void onBindViewHolder(IngredientViewHolder holder, int position){
         Ingredient current = getItem(position);
-        holder.bind(current.ingredient);
+        holder.bind(current.ingredient, current.amount);
     }
 
     public static class IngredientDiff extends DiffUtil.ItemCallback<Ingredient>{

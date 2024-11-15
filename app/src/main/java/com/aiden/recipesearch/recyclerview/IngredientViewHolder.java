@@ -11,14 +11,25 @@ import com.aiden.recipesearch.R;
 
 public class IngredientViewHolder extends RecyclerView.ViewHolder {
     private final TextView ingredientItemView;
+    private final TextView amountItemView;
 
     private IngredientViewHolder(View itemView){
         super(itemView);
-        ingredientItemView = itemView.findViewById(R.id.textView);
+        ingredientItemView = itemView.findViewById(R.id.ingredientName);
+        amountItemView = itemView.findViewById(R.id.amount);
     }
 
-    public void bind(String text){
+    public void bind(String text, int amount){
         ingredientItemView.setText(text);
+
+        String amountText;
+        if(amount == -1){
+            amountText = "N/A";
+        }
+        else{
+            amountText = Integer.toString(amount);
+        }
+        amountItemView.setText(amountText);
     }
 
     static IngredientViewHolder create(ViewGroup parent){
