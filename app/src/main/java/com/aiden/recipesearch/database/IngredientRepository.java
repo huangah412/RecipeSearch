@@ -35,4 +35,8 @@ public class IngredientRepository {
             }
         });
     }
+
+    void delete(String ingredient){
+        ingredientDao.delete(ingredient);
+    }
 }

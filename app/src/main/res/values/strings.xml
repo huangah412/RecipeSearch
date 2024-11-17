@@ -9,4 +9,7 @@
     <string name="dialog_input_amount">Amount</string>
     <string name="more_options">More options</string>
     <string name="recyclerview_item_amount">Amount: </string>
+    <string name="menu_edit_ingredient">Edit</string>
+    <string name="menu_delete_ingredient">Delete</string>
+    <string name="edit_ingredient_dialog_title">Edit Ingredient</string>
 </resources>

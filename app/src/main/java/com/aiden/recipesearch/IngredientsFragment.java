@@ -79,12 +79,14 @@ public class IngredientsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_ingredients, container, false);
         FloatingActionButton fab = rootView.findViewById(R.id.floatingActionButton);
 
+        ingredientViewModel = new ViewModelProvider(this).get(IngredientViewModel.class);
+
         RecyclerView recyclerView = rootView.findViewById(R.id.ingredients);
-        final IngredientListAdapter adapter = new IngredientListAdapter(new IngredientListAdapter.IngredientDiff());
+        final IngredientListAdapter adapter = new IngredientListAdapter(new IngredientListAdapter.IngredientDiff(), ingredientViewModel);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ingredientViewModel = new ViewModelProvider(this).get(IngredientViewModel.class);
+
         ingredientViewModel.getAllIngredients().observe(getViewLifecycleOwner(), ingredients -> {
             adapter.submitList(ingredients);
         });
