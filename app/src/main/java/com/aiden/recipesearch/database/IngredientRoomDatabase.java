@@ -35,18 +35,6 @@ public abstract class IngredientRoomDatabase extends RoomDatabase {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase database){
             super.onCreate(database);
-
-            //Keep data through app restarts: comment out block (currently temporary)
-            databaseWriteExecutor.execute(() -> {
-                IngredientDao dao = INSTANCE.ingredientDao();
-                dao.deleteAll();
-
-                //testing
-                Ingredient ingredient = new Ingredient("Apple", 5);
-                dao.insert(ingredient);
-                ingredient = new Ingredient("Flour", -1);
-                dao.insert(ingredient);
-            });
         }
     };
 }

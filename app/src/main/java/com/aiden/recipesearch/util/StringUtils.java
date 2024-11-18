@@ -19,6 +19,6 @@ public class StringUtils {
         for(String s : strings){
             output.append(s).append(" ");
         }
-        return output.toString();
+        return output.toString().trim();
     }
 }

@@ -96,10 +96,11 @@ public class IngredientsFragment extends Fragment {
 
         //when FAB is pressed open dialog to input ingredient and amount
         fab.setOnClickListener(v -> {
-            View view1 = LayoutInflater.from(getContext()).inflate(R.layout.dialog_layout,null);
+            View view1 = LayoutInflater.from(getContext()).inflate(R.layout.dialog_layout,null); //get dialog layout and textinput boxes
             TextInputEditText ingredient = view1.findViewById(R.id.edit_text_ingredient);
             TextInputEditText amount = view1.findViewById(R.id.edit_text_amount);
 
+            //Create and display dialog
             AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.add_ingredient_dialog_title))
                 .setView(view1)
@@ -109,11 +110,12 @@ public class IngredientsFragment extends Fragment {
             dialog.show();
 
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v1 -> {
-                //Log.d("success", Objects.requireNonNull(input.getText()).toString());
                 boolean error = false;
+                //get input from dialog
                 String ingredientString = Objects.requireNonNull(ingredient.getText()).toString().trim();
                 String amountString = Objects.requireNonNull(amount.getText()).toString().trim();
 
+                // ensure ingredient name is inputted
                 if(ingredientString.isEmpty()) {
                     ingredient.setError("Input ingredient");
                     error = true;
@@ -126,24 +128,25 @@ public class IngredientsFragment extends Fragment {
                 }
 
                 if(!error){
+                    ingredientString = ingredientString.trim();
                     ingredientString = ingredientString.replaceAll("  +", " ");
                     ingredientString = StringUtils.toTitleCase(ingredientString);
 
                     Ingredient ingredient1;
-                    try {
+                    try { //get ingredient with same name from database
                         ingredient1 = ingredientViewModel.getIngredient(ingredientString);
                     } catch (ExecutionException | InterruptedException e) {
                         throw new RuntimeException(e);
                     }
 
-                    if(ingredient1 == null){
-                        ingredient1 = new Ingredient(ingredientString, Integer.parseInt(amountString));
-                    } else if ((Integer.parseInt(amountString) == -1 && ingredient1.amount == -1) || (Integer.parseInt(amountString) == -1 && ingredient1.amount != -1)){
+                    Ingredient input = new Ingredient(ingredientString, Integer.parseInt(amountString));
+
+                    //make sure ingredient in database exists to avoid NullPointerException
+                    if (ingredient1 != null && (Integer.parseInt(amountString) == -1 && ingredient1.amount == -1)){ //amount already unspecified
                         Toast toast = Toast.makeText(getContext(), R.string.error_amount_unspecified, Toast.LENGTH_LONG);
                         toast.show();
                     }
-
-                    ingredientViewModel.insert(ingredient1);
+                    ingredientViewModel.insert(input);
                     dialog.dismiss();
                 }
             });

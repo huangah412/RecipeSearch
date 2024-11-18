@@ -1,15 +1,13 @@
 package com.aiden.recipesearch.database;
 
 import android.app.Application;
+
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class IngredientRepository {
     private IngredientDao ingredientDao;
@@ -35,10 +33,10 @@ public class IngredientRepository {
             if(item == null) { //checks for duplicate
                 ingredientDao.insert(ingredient);
             } else {
-                if(item.amount != -1) { //if amount inputted
+                if(item.amount != -1 && ingredient.amount != -1) { //if amount inputted
                     ingredient.amount += item.amount; //adds amount
-                    ingredient.id = item.id; //sets new id same as old id so it replaces in the database
                 }
+                ingredient.id = item.id; // change input id to id in database so it replaces properly
                 ingredientDao.insert(ingredient);
             }
         });
@@ -48,16 +46,14 @@ public class IngredientRepository {
         ingredientDao.delete(ingredient);
     }
 
-    public Ingredient getIngredient(String name) throws ExecutionException, InterruptedException { //keeps returning null
-        Callable<Ingredient> callable = new Callable<Ingredient>() {
-            @Override
-            public Ingredient call() throws Exception {
-                return ingredientDao.getIngredient(name);
-            }
-        };
-
-        Future<Ingredient> future = Executors.newSingleThreadExecutor().submit(callable);
-        return future.get();
+    public Ingredient getIngredient(String name) {
+        Ingredient output;
+        try {
+            output = executor.submit(() -> ingredientDao.getIngredient(name)).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+        return output;
     }
 
     public ExecutorService getExecutor() {
