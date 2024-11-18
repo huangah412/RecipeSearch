@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.aiden.recipesearch.database.Ingredient;
 import com.aiden.recipesearch.database.IngredientViewModel;
@@ -20,6 +21,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+
 import com.aiden.recipesearch.util.StringUtils;
 
 /**
@@ -120,15 +123,26 @@ public class IngredientsFragment extends Fragment {
 
                 if(amountString.isEmpty()){
                     amountString = "-1";
-                } else{
-                    amount.setError(null);
                 }
 
                 if(!error){
                     ingredientString = ingredientString.replaceAll("  +", " ");
                     ingredientString = StringUtils.toTitleCase(ingredientString);
 
-                    Ingredient ingredient1 = new Ingredient(ingredientString, Integer.parseInt(amountString));
+                    Ingredient ingredient1;
+                    try {
+                        ingredient1 = ingredientViewModel.getIngredient(ingredientString);
+                    } catch (ExecutionException | InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    if(ingredient1 == null){
+                        ingredient1 = new Ingredient(ingredientString, Integer.parseInt(amountString));
+                    } else if ((Integer.parseInt(amountString) == -1 && ingredient1.amount == -1) || (Integer.parseInt(amountString) == -1 && ingredient1.amount != -1)){
+                        Toast toast = Toast.makeText(getContext(), R.string.error_amount_unspecified, Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+
                     ingredientViewModel.insert(ingredient1);
                     dialog.dismiss();
                 }

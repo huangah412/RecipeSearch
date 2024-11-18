@@ -12,4 +12,5 @@
     <string name="menu_edit_ingredient">Edit</string>
     <string name="menu_delete_ingredient">Delete</string>
     <string name="edit_ingredient_dialog_title">Edit Ingredient</string>
+    <string name="error_amount_unspecified">Amount already unspecified</string>
 </resources>
