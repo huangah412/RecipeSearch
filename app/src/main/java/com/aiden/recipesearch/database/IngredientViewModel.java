@@ -1,6 +1,7 @@
 package com.aiden.recipesearch.database;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -20,13 +21,13 @@ public class IngredientViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Ingredient>> getAllIngredients() {return  allIngredients;}
-    public void insert(Ingredient ingredient) {repository.insert(ingredient);}
+    public void insert(Ingredient ingredient, Context context) {repository.insert(ingredient, context);}
     public void delete(String ingredient){
         repository.getExecutor().execute(() -> {
             repository.delete(ingredient);
         });
     }
-    public Ingredient getIngredient(String name) throws ExecutionException, InterruptedException {
+    public Ingredient getIngredient(String name) {
         return repository.getIngredient(name);
     }
 }

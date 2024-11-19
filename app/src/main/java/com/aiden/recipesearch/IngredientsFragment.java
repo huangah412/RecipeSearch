@@ -132,6 +132,7 @@ public class IngredientsFragment extends Fragment {
                     ingredientString = ingredientString.replaceAll("  +", " ");
                     ingredientString = StringUtils.toTitleCase(ingredientString);
 
+                    /*
                     Ingredient ingredient1;
                     try { //get ingredient with same name from database
                         ingredient1 = ingredientViewModel.getIngredient(ingredientString);
@@ -139,14 +140,13 @@ public class IngredientsFragment extends Fragment {
                         throw new RuntimeException(e);
                     }
 
-                    Ingredient input = new Ingredient(ingredientString, Integer.parseInt(amountString));
-
                     //make sure ingredient in database exists to avoid NullPointerException
                     if (ingredient1 != null && (Integer.parseInt(amountString) == -1 && ingredient1.amount == -1)){ //amount already unspecified
                         Toast toast = Toast.makeText(getContext(), R.string.error_amount_unspecified, Toast.LENGTH_LONG);
                         toast.show();
-                    }
-                    ingredientViewModel.insert(input);
+                    }*/
+
+                    ingredientViewModel.insert(new Ingredient(ingredientString, Integer.parseInt(amountString)), getContext());
                     dialog.dismiss();
                 }
             });
