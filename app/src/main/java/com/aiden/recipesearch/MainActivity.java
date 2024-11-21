@@ -9,7 +9,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
-import com.aiden.recipesearch.database.IngredientViewModel;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        //setup navigation bar
         NavigationBarView navigation = findViewById(R.id.navigation);
         navigation.setOnItemSelectedListener(item -> {
             int id = item.getItemId();

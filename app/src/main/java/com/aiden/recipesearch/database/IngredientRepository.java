@@ -52,22 +52,20 @@ public class IngredientRepository {
     }
 
     void delete(String ingredient){
-        ingredientDao.delete(ingredient);
+        executor.execute(() -> ingredientDao.delete(ingredient));
     }
 
     public Ingredient getIngredient(String name) {
-        /* Use this code if getting data from database in UI thread
-         * currently doesn't have any usages in main thread
         Ingredient output;
         try {
             output = executor.submit(() -> ingredientDao.getIngredient(name)).get();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
-        }*/
-        return ingredientDao.getIngredient(name);
+        }
+        return output;
     }
 
-    public ExecutorService getExecutor() {
-        return executor;
+    void update(int id, String ingredient, int amount){
+        executor.execute(() -> ingredientDao.update(id, ingredient, amount));
     }
 }

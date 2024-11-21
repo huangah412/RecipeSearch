@@ -60,6 +60,7 @@ public class IngredientViewHolder extends RecyclerView.ViewHolder implements Pop
         int itemId = item.getItemId();
 
         if (itemId == R.id.menuEditIngredient) {
+            actionListener.onEditIngredient(ingredientItemView.getText().toString(), itemView);
             return true;
         } else if (itemId == R.id.menuDeleteIngredient) {
             actionListener.onDeleteIngredient(ingredientItemView.getText().toString());
@@ -69,7 +70,7 @@ public class IngredientViewHolder extends RecyclerView.ViewHolder implements Pop
         }
     }
     public interface IngredientActionListener {
-        void onEditIngredient(String ingredient);
+        void onEditIngredient(String ingredient, View view);
         void onDeleteIngredient(String ingredient);
     }
 }

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.aiden.recipesearch.database.Ingredient;
 import com.aiden.recipesearch.database.IngredientViewModel;
@@ -21,7 +20,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 import com.aiden.recipesearch.util.StringUtils;
 
@@ -89,7 +87,6 @@ public class IngredientsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
         ingredientViewModel.getAllIngredients().observe(getViewLifecycleOwner(), ingredients -> {
             adapter.submitList(ingredients);
         });
@@ -97,8 +94,8 @@ public class IngredientsFragment extends Fragment {
         //when FAB is pressed open dialog to input ingredient and amount
         fab.setOnClickListener(v -> {
             View view1 = LayoutInflater.from(getContext()).inflate(R.layout.dialog_layout,null); //get dialog layout and textinput boxes
-            TextInputEditText ingredient = view1.findViewById(R.id.edit_text_ingredient);
-            TextInputEditText amount = view1.findViewById(R.id.edit_text_amount);
+            TextInputEditText ingredient = view1.findViewById(R.id.editTextIngredient);
+            TextInputEditText amount = view1.findViewById(R.id.editTextAmount);
 
             //Create and display dialog
             AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
