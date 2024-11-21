@@ -15,6 +15,7 @@ import com.aiden.recipesearch.database.Ingredient;
 import com.aiden.recipesearch.database.IngredientViewModel;
 import com.aiden.recipesearch.util.StringUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Locale;
@@ -88,8 +89,15 @@ public class IngredientListAdapter extends ListAdapter<Ingredient, IngredientVie
             }
 
             @Override
-            public void onDeleteIngredient(String ingredient) {
+            public void onDeleteIngredient(String ingredient, View view) {
+                Ingredient deleted = viewModel.getIngredient(ingredient);
                 viewModel.delete(ingredient);
+
+                // notify user of deletion, allow them to undo action
+                Snackbar notifyDelete = Snackbar.make(view,"Deleted", Snackbar.LENGTH_LONG).setAction("Undo", v -> {
+                    viewModel.insert(deleted, view.getContext());
+                });
+                notifyDelete.show();
             }
         });
 
