@@ -1,9 +1,11 @@
 package com.aiden.recipesearch.util;
 
 
+import java.util.Locale;
+
 public class StringUtils {
     public static String toTitleCase(String str){
-        str = str.toLowerCase();
+        str = str.toLowerCase(Locale.getDefault());
         String[] strings = str.split(" ");
         for(int i = 0; i < strings.length; i++){
             String s = strings[i];
@@ -17,6 +19,6 @@ public class StringUtils {
         for(String s : strings){
             output.append(s).append(" ");
         }
-        return output.toString();
+        return output.toString().trim();
     }
 }
