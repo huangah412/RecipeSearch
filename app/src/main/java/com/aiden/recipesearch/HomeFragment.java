@@ -1,12 +1,17 @@
 package com.aiden.recipesearch;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +64,14 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        Button searchButton = view.findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(this::searchRecipe);
+        return view;
+    }
+
+    public void searchRecipe(View view){
+        Intent intent = new Intent(getContext(), SearchActivity.class);
+        startActivity(intent);
     }
 }

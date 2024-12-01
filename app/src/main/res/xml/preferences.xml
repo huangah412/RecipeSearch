@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="switch_preference_1"
+        android:title="Switch preference" />
+    <Preference
+        android:key="deleteIngredients"
+        android:title="Delete all ingredients"
+        android:summary="Warning: Cannot be undone"/>
+    <Preference
+        android:key="deleteHistory"
+        android:title="Delete history"/>
+</PreferenceScreen>

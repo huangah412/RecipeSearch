@@ -13,4 +13,11 @@
     <string name="menu_delete_ingredient">Delete</string>
     <string name="edit_ingredient_dialog_title">Edit Ingredient</string>
     <string name="error_amount_unspecified">Amount already unspecified</string>
+    <string name="error_input_ingredient">Input ingredient</string>
+    <string name="snackbar_deleted_item">Deleted ingredient</string>
+    <string name="snackbar_action_undo">Undo</string>
+    <string name="deleted_all_ingredients">Deleted all ingredients</string>
+    <string name="welcome">Welcome</string>
+    <string name="search">Search for a recipe</string>
+    <string name="choose_ingredients">Choose ingredients:</string>
 </resources>

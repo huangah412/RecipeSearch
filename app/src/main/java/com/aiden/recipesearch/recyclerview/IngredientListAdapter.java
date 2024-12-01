@@ -1,5 +1,6 @@
 package com.aiden.recipesearch.recyclerview;
 
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +68,7 @@ public class IngredientListAdapter extends ListAdapter<Ingredient, IngredientVie
 
                     // ensure ingredient name is inputted
                     if(ingredientString.isEmpty()) {
-                        ingredient.setError("Input ingredient");
+                        ingredient.setError(view.getResources().getString(R.string.error_input_ingredient));
                         error = true;
                     } else{
                         ingredient.setError(null);
@@ -93,8 +94,9 @@ public class IngredientListAdapter extends ListAdapter<Ingredient, IngredientVie
                 Ingredient deleted = viewModel.getIngredient(ingredient);
                 viewModel.delete(ingredient);
 
+                Resources res = view.getResources();
                 // notify user of deletion, allow them to undo action
-                Snackbar notifyDelete = Snackbar.make(view,"Deleted", Snackbar.LENGTH_LONG).setAction("Undo", v -> {
+                Snackbar notifyDelete = Snackbar.make(view,res.getString(R.string.snackbar_deleted_item), Snackbar.LENGTH_LONG).setAction(res.getString(R.string.snackbar_action_undo), v -> {
                     viewModel.insert(deleted, view.getContext());
                 });
                 notifyDelete.show();

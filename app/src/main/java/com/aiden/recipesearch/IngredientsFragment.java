@@ -114,7 +114,7 @@ public class IngredientsFragment extends Fragment {
 
                 // ensure ingredient name is inputted
                 if(ingredientString.isEmpty()) {
-                    ingredient.setError("Input ingredient");
+                    ingredient.setError(getString(R.string.error_input_ingredient));
                     error = true;
                 } else{
                     ingredient.setError(null);

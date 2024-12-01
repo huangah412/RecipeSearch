@@ -51,6 +51,10 @@ public class IngredientRepository {
         });
     }
 
+    void deleteAll(){
+        executor.execute(() -> ingredientDao.deleteAll());
+    }
+
     void delete(String ingredient){
         executor.execute(() -> ingredientDao.delete(ingredient));
     }
