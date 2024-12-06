@@ -122,6 +122,5 @@ public class IngredientListAdapter extends ListAdapter<Ingredient, IngredientVie
         public boolean areContentsTheSame(@NonNull Ingredient oldItem, @NonNull Ingredient newItem) {
             return oldItem.ingredient.equals(newItem.ingredient);
         }
-
     }
 }

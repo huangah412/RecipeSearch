@@ -20,4 +20,5 @@
     <string name="welcome">Welcome</string>
     <string name="search">Search for a recipe</string>
     <string name="choose_ingredients">Choose ingredients:</string>
+    <string name="search_random">Random search</string>
 </resources>

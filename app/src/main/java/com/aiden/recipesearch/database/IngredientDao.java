@@ -29,6 +29,9 @@ public interface IngredientDao {
     @Query("SELECT * FROM ingredient_table ORDER BY ingredient ASC")
     LiveData<List<Ingredient>> getAlphabetizedIngredients();
 
+    @Query("SELECT ingredient FROM ingredient_table ORDER BY ingredient ASC")
+    List<String> getIngredientNames();
+
     @Query("SELECT * FROM ingredient_table ORDER BY ingredient DESC")
     LiveData<List<Ingredient>> getAlphabetizedIngredientsDescending();
 

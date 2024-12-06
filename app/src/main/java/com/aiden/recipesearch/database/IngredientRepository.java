@@ -69,6 +69,16 @@ public class IngredientRepository {
         return output;
     }
 
+    public List<String> getIngredientNames(){
+        List<String> output;
+        try{
+            output = executor.submit(() -> ingredientDao.getIngredientNames()).get();
+        } catch (InterruptedException | ExecutionException e){
+            throw new RuntimeException(e);
+        }
+        return output;
+    }
+
     void update(int id, String ingredient, int amount){
         executor.execute(() -> ingredientDao.update(id, ingredient, amount));
     }

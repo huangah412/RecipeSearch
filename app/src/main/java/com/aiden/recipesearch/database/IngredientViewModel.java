@@ -30,6 +30,9 @@ public class IngredientViewModel extends AndroidViewModel {
     public void update(int id, String ingredient, int amount){
         repository.update(id, ingredient, amount);
     }
+    public List<String> getIngredientNames(){
+        return repository.getIngredientNames();
+    }
     public Ingredient getIngredient(String name) {
         return repository.getIngredient(name);
     }

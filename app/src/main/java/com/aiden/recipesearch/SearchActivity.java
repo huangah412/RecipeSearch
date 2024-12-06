@@ -1,5 +1,7 @@
 package com.aiden.recipesearch;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,15 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aiden.recipesearch.database.Ingredient;
 import com.aiden.recipesearch.database.IngredientViewModel;
 import com.aiden.recipesearch.recyclerview.ChooseItemListAdapter;
-import com.aiden.recipesearch.recyclerview.ChooseItemViewHolder;
 import com.aiden.recipesearch.recyclerview.IngredientListAdapter;
 
 import java.util.ArrayList;
@@ -63,6 +62,16 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         }
+
+        //create url to search google
+        StringBuilder stringBuilder = new StringBuilder("https://www.google.com/search?q=$recipe$+");
+        for(String ingredient : selectedIngredients) {
+            stringBuilder.append(String.format("$%s$+", ingredient));
+        }
+
+        //display url
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(stringBuilder.toString().replaceAll("\\$", "\"")));
+        startActivity(intent);
 
         Log.d("Search", selectedIngredients.toString());
     }

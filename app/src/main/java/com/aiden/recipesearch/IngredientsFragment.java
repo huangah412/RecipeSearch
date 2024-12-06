@@ -35,6 +35,10 @@ public class IngredientsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private IngredientViewModel ingredientViewModel;
+    private static RecyclerView recyclerView;
+    public static RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -82,7 +86,7 @@ public class IngredientsFragment extends Fragment {
 
         ingredientViewModel = new ViewModelProvider(this).get(IngredientViewModel.class);
 
-        RecyclerView recyclerView = rootView.findViewById(R.id.ingredients);
+        recyclerView = rootView.findViewById(R.id.ingredients);
         final IngredientListAdapter adapter = new IngredientListAdapter(new IngredientListAdapter.IngredientDiff(), ingredientViewModel);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -151,4 +155,6 @@ public class IngredientsFragment extends Fragment {
 
         return rootView;
     }
+
+
 }

@@ -4,14 +4,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.aiden.recipesearch.database.IngredientViewModel;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +28,7 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private IngredientViewModel viewModel;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -65,13 +70,42 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
         Button searchButton = view.findViewById(R.id.searchButton);
+        Button searchButtonRandom = view.findViewById(R.id.searchButtonRandom);
+
         searchButton.setOnClickListener(this::searchRecipe);
+        searchButtonRandom.setOnClickListener(this::searchRandom);
+
+        viewModel = new ViewModelProvider(this).get(IngredientViewModel.class);
         return view;
     }
 
     public void searchRecipe(View view){
         Intent intent = new Intent(getContext(), SearchActivity.class);
+        startActivity(intent);
+    }
+
+    public void searchRandom(View view){
+
+        List<String> ingredients = viewModel.getIngredientNames();
+
+        final int INGREDIENTS_CHOSEN = 3;
+        if (ingredients.size() <= INGREDIENTS_CHOSEN) {
+            Toast toast = Toast.makeText(getContext(), "test", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+
+        StringBuilder stringBuilder = new StringBuilder("https://www.google.com/search?q=$recipe$+");
+        for(int i = 0; i < INGREDIENTS_CHOSEN; i++){
+            int selected = (int)(Math.random()*ingredients.size());
+            String ingredient = ingredients.get(selected);
+            ingredients.remove(selected);
+            stringBuilder.append(String.format("$%s$+", ingredient));
+        }
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(stringBuilder.toString().replaceAll("\\$","\"")));
         startActivity(intent);
     }
 }
