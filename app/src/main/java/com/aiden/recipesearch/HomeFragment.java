@@ -92,7 +92,7 @@ public class HomeFragment extends Fragment {
 
         final int INGREDIENTS_CHOSEN = 3;
         if (ingredients.size() <= INGREDIENTS_CHOSEN) {
-            Toast toast = Toast.makeText(getContext(), "test", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getContext(), getResources().getString(R.string.random_search_input_more), Toast.LENGTH_SHORT);
             toast.show();
             return;
         }
@@ -100,8 +100,7 @@ public class HomeFragment extends Fragment {
         StringBuilder stringBuilder = new StringBuilder("https://www.google.com/search?q=$recipe$+");
         for(int i = 0; i < INGREDIENTS_CHOSEN; i++){
             int selected = (int)(Math.random()*ingredients.size());
-            String ingredient = ingredients.get(selected);
-            ingredients.remove(selected);
+            String ingredient = ingredients.remove(selected);
             stringBuilder.append(String.format("$%s$+", ingredient));
         }
 
