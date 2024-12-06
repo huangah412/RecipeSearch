@@ -51,6 +51,10 @@ public class IngredientRepository {
         });
     }
 
+    void deleteAll(){
+        executor.execute(() -> ingredientDao.deleteAll());
+    }
+
     void delete(String ingredient){
         executor.execute(() -> ingredientDao.delete(ingredient));
     }
@@ -60,6 +64,16 @@ public class IngredientRepository {
         try {
             output = executor.submit(() -> ingredientDao.getIngredient(name)).get();
         } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+        return output;
+    }
+
+    public List<String> getIngredientNames(){
+        List<String> output;
+        try{
+            output = executor.submit(() -> ingredientDao.getIngredientNames()).get();
+        } catch (InterruptedException | ExecutionException e){
             throw new RuntimeException(e);
         }
         return output;

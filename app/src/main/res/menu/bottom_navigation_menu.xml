@@ -5,10 +5,10 @@
     <item
         android:enabled="true"
         android:id="@+id/home"
-        android:icon="@android:drawable/star_off"
+        android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/home" />
     <item
-        android:icon="@android:drawable/ic_menu_manage"
+        android:icon="@drawable/ic_fastfood_black_24dp"
         android:id="@+id/ingredients"
         android:enabled="true"
         android:title="@string/ingredients" />
