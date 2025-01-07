@@ -19,12 +19,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aiden.recipesearch.database.IngredientViewModel;
 import com.aiden.recipesearch.recyclerview.ChooseItemListAdapter;
 import com.aiden.recipesearch.recyclerview.IngredientListAdapter;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity {
     private IngredientViewModel viewModel;
     private RecyclerView recyclerView;
+    private MaterialToolbar topAppBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,7 @@ public class SearchActivity extends AppCompatActivity {
             return insets;
         });
         viewModel = new ViewModelProvider(this).get(IngredientViewModel.class);
+        topAppBar = findViewById(R.id.topAppBarSearch);
 
         //setup recyclerView
         recyclerView = findViewById(R.id.chooseItems);
@@ -45,6 +48,10 @@ public class SearchActivity extends AppCompatActivity {
 
         viewModel.getAllIngredients().observe(this, ingredients -> {
             adapter.submitList(ingredients);
+        });
+
+        topAppBar.setNavigationOnClickListener(v -> {
+            finish();
         });
     }
 

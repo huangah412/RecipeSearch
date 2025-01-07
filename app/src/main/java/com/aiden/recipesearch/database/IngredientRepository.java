@@ -39,7 +39,7 @@ public class IngredientRepository {
                 ingredientDao.insert(ingredient);
             } else {
                 if(ingredient.amount == -1 && item.amount == -1){ //both input and target unspecified: notify user, does nothing else
-                    Looper.prepare();
+                    Looper.prepare(); // allows messages to be shown in the thread
                     Toast toast = Toast.makeText(context, R.string.error_amount_unspecified, Toast.LENGTH_LONG);
                     toast.show();
                 } else if(item.amount != -1 && ingredient.amount != -1) { //if input and target amount inputted
