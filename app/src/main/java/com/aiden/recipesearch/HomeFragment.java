@@ -90,15 +90,15 @@ public class HomeFragment extends Fragment {
 
         List<String> ingredients = viewModel.getIngredientNames();
 
-        final int INGREDIENTS_CHOSEN = 3;
-        if (ingredients.size() <= INGREDIENTS_CHOSEN) {
+        final int MIN_INGREDIENTS = 3;
+        if (ingredients.size() <= MIN_INGREDIENTS) {
             Toast toast = Toast.makeText(getContext(), getResources().getString(R.string.random_search_input_more), Toast.LENGTH_SHORT);
             toast.show();
             return;
         }
 
         StringBuilder stringBuilder = new StringBuilder("https://www.google.com/search?q=$recipe$+");
-        for(int i = 0; i < INGREDIENTS_CHOSEN; i++){
+        for(int i = 0; i < MIN_INGREDIENTS; i++){
             int selected = (int)(Math.random()*ingredients.size());
             String ingredient = ingredients.remove(selected);
             stringBuilder.append(String.format("$%s$+", ingredient));
