@@ -22,4 +22,8 @@
     <string name="choose_ingredients">Choose ingredients:</string>
     <string name="search_random">Random search</string>
     <string name="random_search_input_more">Input more than 3 ingredients</string>
+    <string name="delete_all">Delete all ingredients</string>
+    <string name="confirm">Yes</string>
+    <string name="are_you_sure">Are you sure you want to delete all the ingredients?</string>
+    <string name="snackbar_deleted_items">Deleted all ingredients</string>
 </resources>

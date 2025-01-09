@@ -4,6 +4,11 @@ package com.aiden.recipesearch.util;
 import java.util.Locale;
 
 public class StringUtils {
+    /**
+     * Converts a string into title case
+     * @param str String to convert to title case
+     * @return String with all lowercase except for the first letter of each word which is uppercase
+     */
     public static String toTitleCase(String str){
         str = str.toLowerCase(Locale.getDefault());
         String[] strings = str.split(" ");

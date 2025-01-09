@@ -22,9 +22,7 @@ public class IngredientViewHolder extends RecyclerView.ViewHolder implements Pop
         ingredientItemView = itemView.findViewById(R.id.ingredientName);
         amountItemView = itemView.findViewById(R.id.amount);
         Button moreOptionsButton = itemView.findViewById(R.id.moreOptions);
-        moreOptionsButton.setOnClickListener(v -> {
-            showMenu(v);
-        });
+        moreOptionsButton.setOnClickListener(this::showMenu);
     }
 
     public void bind(String text, int amount, IngredientActionListener actionListener){

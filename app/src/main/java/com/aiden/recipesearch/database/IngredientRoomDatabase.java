@@ -24,14 +24,14 @@ public abstract class IngredientRoomDatabase extends RoomDatabase {
         if(INSTANCE == null){
             synchronized (IngredientRoomDatabase.class){
                 if(INSTANCE == null){
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), IngredientRoomDatabase.class, "ingredient_database").addCallback(sRoomDatabaseCallback).build();
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), IngredientRoomDatabase.class, "ingredient_database").addCallback(roomDatabaseCallback).build();
                 }
             }
         }
         return INSTANCE;
     }
 
-    private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback(){
+    private static final RoomDatabase.Callback roomDatabaseCallback = new RoomDatabase.Callback(){
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase database){
             super.onCreate(database);

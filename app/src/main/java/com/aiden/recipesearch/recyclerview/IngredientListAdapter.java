@@ -29,8 +29,9 @@ public class IngredientListAdapter extends ListAdapter<Ingredient, IngredientVie
         this.viewModel = viewModel;
     }
 
+    @NonNull
     @Override
-    public IngredientViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         return IngredientViewHolder.create(parent);
     }
 
@@ -96,9 +97,7 @@ public class IngredientListAdapter extends ListAdapter<Ingredient, IngredientVie
 
                 Resources res = view.getResources();
                 // notify user of deletion, allow them to undo action
-                Snackbar notifyDelete = Snackbar.make(view,res.getString(R.string.snackbar_deleted_item), Snackbar.LENGTH_LONG).setAction(res.getString(R.string.snackbar_action_undo), v -> {
-                    viewModel.insert(deleted, view.getContext());
-                });
+                Snackbar notifyDelete = Snackbar.make(view,res.getString(R.string.snackbar_deleted_item), Snackbar.LENGTH_LONG).setAction(res.getString(R.string.snackbar_action_undo), v -> viewModel.insert(deleted, view.getContext()));
                 notifyDelete.show();
             }
         });

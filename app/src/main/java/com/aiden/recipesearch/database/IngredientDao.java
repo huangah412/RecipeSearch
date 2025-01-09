@@ -23,23 +23,12 @@ public interface IngredientDao {
     @Query("SELECT * FROM ingredient_table WHERE ingredient = :name")
     Ingredient getIngredient(String name);
 
-    /*@Query("SELECT amount FROM ingredient_table WHERE ingredient = :name")
-    int getAmount(String name);*/
-
     @Query("SELECT * FROM ingredient_table ORDER BY ingredient ASC")
     LiveData<List<Ingredient>> getAlphabetizedIngredients();
 
+    @Query("SELECT * FROM ingredient_table ORDER BY ingredient ASC")
+    List<Ingredient> getIngredients();
+
     @Query("SELECT ingredient FROM ingredient_table ORDER BY ingredient ASC")
     List<String> getIngredientNames();
-
-    @Query("SELECT * FROM ingredient_table ORDER BY ingredient DESC")
-    LiveData<List<Ingredient>> getAlphabetizedIngredientsDescending();
-
-    @Query("SELECT * FROM ingredient_table ORDER BY amount ASC")
-    LiveData<List<Ingredient>> getAmountAscending();
-
-    @Query("SELECT * FROM ingredient_table ORDER BY amount DESC")
-    LiveData<List<Ingredient>> getAmountDescending();
-
-    //TODO: get IDs query, find out what order would get newest first (its last first but probably not needed)
 }

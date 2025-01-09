@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "ingredient_table")
 public class Ingredient {
-    //might want to be private
+
     @PrimaryKey(autoGenerate = true)
     public int id;
     @NonNull

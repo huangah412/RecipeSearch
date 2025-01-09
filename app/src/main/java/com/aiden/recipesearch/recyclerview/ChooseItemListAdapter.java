@@ -7,17 +7,15 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
 import com.aiden.recipesearch.database.Ingredient;
-import com.aiden.recipesearch.database.IngredientViewModel;
 
 public class ChooseItemListAdapter extends ListAdapter<Ingredient, ChooseItemViewHolder> {
-    private final IngredientViewModel viewModel;
-    public ChooseItemListAdapter(@NonNull DiffUtil.ItemCallback<Ingredient> diffCallback, IngredientViewModel viewModel){
+    public ChooseItemListAdapter(@NonNull DiffUtil.ItemCallback<Ingredient> diffCallback){
         super(diffCallback);
-        this.viewModel = viewModel;
     }
 
+    @NonNull
     @Override
-    public ChooseItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public ChooseItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         return ChooseItemViewHolder.create(parent);
     }
 

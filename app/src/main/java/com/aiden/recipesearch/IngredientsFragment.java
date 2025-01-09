@@ -15,65 +15,23 @@ import android.view.ViewGroup;
 import com.aiden.recipesearch.database.Ingredient;
 import com.aiden.recipesearch.database.IngredientViewModel;
 import com.aiden.recipesearch.recyclerview.IngredientListAdapter;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.List;
 import java.util.Objects;
 
 import com.aiden.recipesearch.util.StringUtils;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link IngredientsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class IngredientsFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private IngredientViewModel ingredientViewModel;
-    private static RecyclerView recyclerView;
-    public static RecyclerView getRecyclerView() {
-        return recyclerView;
-    }
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public IngredientsFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment IngredientsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static IngredientsFragment newInstance(String param1, String param2) {
-        IngredientsFragment fragment = new IngredientsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
     }
 
     @Override
@@ -86,18 +44,42 @@ public class IngredientsFragment extends Fragment {
 
         ingredientViewModel = new ViewModelProvider(this).get(IngredientViewModel.class);
 
-        recyclerView = rootView.findViewById(R.id.ingredients);
+        RecyclerView recyclerView = rootView.findViewById(R.id.ingredients);
         final IngredientListAdapter adapter = new IngredientListAdapter(new IngredientListAdapter.IngredientDiff(), ingredientViewModel);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ingredientViewModel.getAllIngredients().observe(getViewLifecycleOwner(), ingredients -> {
-            adapter.submitList(ingredients);
+        MaterialToolbar materialToolbar = rootView.findViewById(R.id.materialToolbar2);
+        materialToolbar.setOnMenuItemClickListener(v -> {
+            AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.delete_all))
+                .setMessage(getString(R.string.are_you_sure))
+                .setNegativeButton(getString(R.string.add_ingredient_dialog_cancel), ((dialog1, which) -> dialog1.cancel()))
+                .setPositiveButton(getString(R.string.confirm), null)
+                .create();
+            dialog.show();
+
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v1 -> {
+                List<Ingredient> allIngredients = ingredientViewModel.getIngredients();
+                ingredientViewModel.deleteAll();
+
+                Snackbar snackbar = Snackbar.make(rootView, getString(R.string.snackbar_deleted_items), Snackbar.LENGTH_LONG).setAction(getString(R.string.snackbar_action_undo), v2 -> {
+                    for(Ingredient i : allIngredients){
+                        ingredientViewModel.insert(i, getContext());
+                    }
+                });
+                dialog.dismiss();
+                snackbar.show();
+            });
+
+            return false;
         });
+
+        ingredientViewModel.getAllIngredients().observe(getViewLifecycleOwner(), adapter::submitList);
 
         //when FAB is pressed open dialog to input ingredient and amount
         fab.setOnClickListener(v -> {
-            View view1 = LayoutInflater.from(getContext()).inflate(R.layout.dialog_layout,null); //get dialog layout and textinput boxes
+            View view1 = LayoutInflater.from(getContext()).inflate(R.layout.dialog_layout,null); //get dialog layout and text input boxes
             TextInputEditText ingredient = view1.findViewById(R.id.editTextIngredient);
             TextInputEditText amount = view1.findViewById(R.id.editTextAmount);
 

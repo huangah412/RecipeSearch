@@ -24,9 +24,8 @@ import com.google.android.material.appbar.MaterialToolbar;
 import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity {
-    private IngredientViewModel viewModel;
     private RecyclerView recyclerView;
-    private MaterialToolbar topAppBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,24 +36,24 @@ public class SearchActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        viewModel = new ViewModelProvider(this).get(IngredientViewModel.class);
-        topAppBar = findViewById(R.id.topAppBarSearch);
+        IngredientViewModel viewModel = new ViewModelProvider(this).get(IngredientViewModel.class);
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBarSearch);
 
         //setup recyclerView
         recyclerView = findViewById(R.id.chooseItems);
-        final ChooseItemListAdapter adapter = new ChooseItemListAdapter(new IngredientListAdapter.IngredientDiff(), viewModel);
+        final ChooseItemListAdapter adapter = new ChooseItemListAdapter(new IngredientListAdapter.IngredientDiff());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        viewModel.getAllIngredients().observe(this, ingredients -> {
-            adapter.submitList(ingredients);
-        });
+        viewModel.getAllIngredients().observe(this, adapter::submitList);
 
-        topAppBar.setNavigationOnClickListener(v -> {
-            finish();
-        });
+        topAppBar.setNavigationOnClickListener(v -> finish());
     }
 
+    /**
+     * Opens a Google web page with certain ingredients that the user selects from a <code>RecyclerView</code>
+     * @param view button clicked on
+     */
     public void searchRecipe(View view){
         ArrayList<String> selectedIngredients = new ArrayList<>();
 
@@ -71,7 +70,7 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         //create url to search google
-        StringBuilder stringBuilder = new StringBuilder("https://www.google.com/search?q=$recipe$+");
+        StringBuilder stringBuilder = new StringBuilder("https://www.google.com/search?q=recipe+with+");
         for(String ingredient : selectedIngredients) {
             stringBuilder.append(String.format("$%s$+", ingredient));
         }
