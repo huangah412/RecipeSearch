@@ -1,6 +1,7 @@
 For my IB Comp Sci IA
 
-Sources
+Sources:
+
 https://www.geeksforgeeks.org/bottomnavigationview-inandroid/
 https://stackoverflow.com/questions/68021770/setonnavigationitemselectedlistener-deprecated
 https://stackoverflow.com/questions/44593772/findviewbyid-marked-red
